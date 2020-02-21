@@ -74,6 +74,10 @@ tajukbaru=`echo $tajuklama | caesar $time`
 mv $tajuk $tajukbaru.txt
 done
 ```
+Sintaks **for tajuk in $@** digunakan untuk mengipuntkan nama file yang nantinya akan dienkripsi dengan metode caesar cipher.
+Untuk varibel **time** berfungsi untuk menangkap atau memperoleh waktu (hour) pada saat file tersebut dibuat yang nantinya akan digunakan pada saat melakukan caesar cipher seperti pada variabel **tajukbaru**. **basename** digunakan untuk menghilangkan ekstensi file .txt yang ada pada file tersebut dan setelah dienkripsi file tersebut akan berganti nama sesuai dengan dengan hasil caesar.
+
+
 #### Soal 2.d
 ```bash
 #!/bin/bash
@@ -87,6 +91,7 @@ tajukbaru=`echo $tajuklama | caesar $jambaru`
 mv $tajuk $tajukbaru.txt
 done
 ```
+Untuk mendekripsi file yang sebelumnya telah dienkripsi pada soal 3c, dapat menggunakan langkah-langkah yang hampir sama dengan poin c tadi. Hanya dengan menambahkan variabel **jambaru=`expr 26 - $jam`** yang berfungsi untuk mengurangi jumlah alphabet (26) dengan variabel **$jam** saat file dibuat dan kemudian nama file kembali seperti semula.
 
 ## Soal 3
 ### Deskripsi
