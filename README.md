@@ -1,11 +1,11 @@
-#SoalShiftSISOP20_modul1_T05
-####Anggota Kelompok:
+# SoalShiftSISOP20_modul1_T05
+#### Anggota Kelompok:
 1. I Gede Pradhana Indra W. (05311840000031)
 2. Agung Mulyono            (05311840000035)
 
 
-##Soal 1
-###Deskripsi
+## Soal 1
+### Deskripsi
 Whits adalah seorang mahasiswa teknik informatika. Dia mendapatkan tugas praktikum untuk membuat laporan berdasarkan data yang ada pada file "Sample-Superstore.csv". Namun dia tidak dapat meyelesaikan tugas tersebut. Laporan yang diminta berupa:
 
 **a**. Tentukan wilayah bagian (state) yang memiliki keuntungan (profit) paling sedikit.
@@ -14,7 +14,7 @@ Whits adalah seorang mahasiswa teknik informatika. Dia mendapatkan tugas praktik
 
 **c**. Tampilkan 10 produk (product name) yang memiliki keuntungan (profit) paling sedikit berdasarkan 2 negara bagian (state) hasil poin b.
 
-###Pembahasan
+### Pembahasan
 ```bash
 #!/bin/bash
 
@@ -39,8 +39,8 @@ echo ""
 awk -F "\t" -v D=$C2 'NR>1{if($11~D)check[$17]+=$21} END{for(i in check) printf "%s,%f\n",i, check[i]}' Sample-Superstore.tsv | sort -g -t"," -k 2 | awk -F "," 'NR<11 {printf "%s\n", $1 }'
 ```
 
-##Soal2
-###Deskripsi
+## Soal2
+### Deskripsi
 **a**. Membuat sebuah script bash yang dapat menghasilkan password secara acak sebanyak 28 kaeakter yang terdapat huruf besar, huruf kecil, angka.
 
 **b**. Password acak tersebut disimpan pada file berekstensi .txt dengan nama berdasarkan argumen yang diinputkan dan **HANYA berupa alphabet**.
@@ -49,9 +49,9 @@ awk -F "\t" -v D=$C2 'NR>1{if($11~D)check[$17]+=$21} END{for(i in check) printf 
 
 **d**. Membuat script untuk mendekripsi file yang telah di enkrip
 
-###Pembahasan
+### Pembahasan
 
-####Soa1 2.a
+#### Soa1 2.a
 ```bash
 #!/bin/bash
 password=`cat /dev/urandom | tr -d -c 'A-Za-z0-9' | fold -w 28 | head -n 1`
@@ -59,7 +59,7 @@ filename=`echo $1 | tr -d -c 'A-Za-z'`
 echo $password > $filename.txt
 ```
 
-####Soal 2.c
+#### Soal 2.c
 ```bash
 #!/bin/bash
 
@@ -72,7 +72,7 @@ tajukbaru=`echo $tajuklama | caesar $time`
 mv $tajuk $tajukbaru.txt
 done
 ```
-####Soal 2.d
+#### Soal 2.d
 ```bash
 #!/bin/bash
 
@@ -86,17 +86,17 @@ mv $tajuk $tajukbaru.txt
 done
 ```
 
-##Soal 3
-###Deskripsi
+## Soal 3
+### Deskripsi
 **a**. Membuat script untuk mendownload 28 gambar dari "https://loremflickr.com/320/240/cat" menggunakan command **wget** dan menyimpan file dengan nama "pdkt_kusuma_NO" serta menyimpan **log message wget** kedalam sebuah file "wget.log"
 
 **b**. Membuat crontab download file **setiap 8 jam dimulai dari jam 6.05 setiap hari kecuali hari sabtu**
 
 **c**. Membuat script untuk mengidentifikasi gambar yang identik dari keseluruhan gambar yang terdownload tadi. Bila terindikasi sebagai gambar yang identik, maka sisakan 1 gambar dan pindahkan sisa file identik tersebut ke dalam folder ./duplicate dengan format filename "duplicate_nomor". Setelah itu lakukan pemindahan semua gambar yang tersisa ke dalam folder ./kenangan dengan format filename "kenangan_nomor". Setelah tidak ada gambar di *current directory*, maka lakukan backup seluruh log menjadi ekstensi ".log.bak".
 
-###Pembahasan
+### Pembahasan
 
-####Soal 3.a
+#### Soal 3.a
 ```bash
 #!/bin/bash
 
