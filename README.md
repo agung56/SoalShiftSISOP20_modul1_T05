@@ -106,3 +106,61 @@ do
 wget "https://loremflickr.com/320/240/cat" -a wget.log -O "pdkt_kusuma_$gambar"
 done
 ```
+#### Soal 3.b
+```bash 
+# Edit this file to introduce tasks to be run by cron.
+# 
+# Each task to run has to be defined through a single line
+# indicating with different fields when the task will be run
+# and what command to run for the task
+# 
+# To define the time you can provide concrete values for
+# minute (m), hour (h), day of month (dom), month (mon),
+# and day of week (dow) or use '*' in these fields (for 'any').# 
+# Notice that tasks will be started based on the cron's system
+# daemon's notion of time and timezones.
+# 
+# Output of the crontab jobs (including errors) is sent through
+# email to the user the crontab file belongs to (unless redirected).
+# 
+# For example, you can run a backup of all your user accounts
+# at 5 a.m every week with:
+# 0 5 * * 1 tar -zcf /var/backups/home.tgz /home/
+# 
+# For more information see the manual pages of crontab(5) and cron(8)
+# 
+# m h  dom mon dow   command
+#* 0-14,19-23 * * * ls /home/lab/Downloads > /home/lab/log/"date".txt
+
+* * * * * cd /home/lab/Downloads/modul1/soal3 && ./soal3.sh
+```
+
+#### Soal 3.c
+```bash
+#!/bin/bash
+
+kenangan=`mkdir kenangan`
+duplicate=`mkdir duplicate`
+
+coba=`ls | grep "pdkt_kusuma_" | cut -d "_" -f 3 | sort -n | tail -1`
+
+arr=""
+for ((i=1;i<=coba;i=i+1))
+do
+lokasi=`cat wget.log | grep "Location" | head -$i | tail -1 | cut -d " "  -f 2`
+duplikat=`echo -e $arr | awk -v loc=$lokasi 'BEGIN{duplikatlagi=0}{if(loc==$0) duplikatlagi=1} END {printf "%d", duplikatlagi}'`
+
+
+if [[ $duplikat == 0 ]]
+then
+
+arr="$arr$lokasi\n"
+mv pdkt_kusuma_$i kenangan/kenangan_$i
+else
+mv pdkt_kusuma_$i duplicate/duplicate_$i
+fi
+done
+
+cat wget.log >> wget.log.bak
+rm wget.log
+```
