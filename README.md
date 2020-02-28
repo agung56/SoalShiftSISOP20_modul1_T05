@@ -132,7 +132,7 @@ done
 # m h  dom mon dow   command
 #* 0-14,19-23 * * * ls /home/lab/Downloads > /home/lab/log/"date".txt
 
-* * * * * cd /home/lab/Downloads/modul1/soal3 && ./soal3.sh
+5 6-23/8 * * 0-5 /bin/bash /home/lab/Downloads/modul1/soal3/soal3.sh
 ```
 
 #### Soal 3.c
