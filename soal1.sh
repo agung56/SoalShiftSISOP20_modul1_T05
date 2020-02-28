@@ -13,13 +13,7 @@ C2=`echo $B | awk -F " " '{printf $2}'`
 echo $C1 $C2
 echo""
 
-
 #untuk nomor 1c
 
-awk -F "\t" -v C=$C1 'NR>1{if($11~C)check[$17]+=$21} END{for(i in check) printf "%s,%f\n",i, check[i]}' Sample-Superstore.tsv | sort -g -t"," -k 2 | awk -F "," 'NR<11 {printf "%s\n", $1 }'
+awk -F "\t" -v C=$C1 -v D=$C2 '{if (match ($11,C)||match ($11,D)) seen[$17]+=$NF} END{for(i in seen) printf "%s,%f\n",i, seen[i]}' Sample-Superstore.tsv | sort -g -t"," -k 2 | awk -F "," 'NR<11 {printf "%s\n", $1 }'
 echo ""
-awk -F "\t" -v D=$C2 'NR>1{if($11~D)check[$17]+=$21} END{for(i in check) printf "%s,%f\n",i, check[i]}' Sample-Superstore.tsv | sort -g -t"," -k 2 | awk -F "," 'NR<11 {printf "%s\n", $1 }'
-
-
-
-
