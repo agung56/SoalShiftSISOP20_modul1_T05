@@ -1,3 +1,4 @@
+
 # Edit this file to introduce tasks to be run by cron.
 # 
 # Each task to run has to be defined through a single line
@@ -22,6 +23,4 @@
 # m h  dom mon dow   command
 #* 0-14,19-23 * * * ls /home/lab/Downloads > /home/lab/log/"date".txt
 
-* * * * * cd /home/lab/Downloads/modul1/soal3 && ./soal3.sh
-
-
+5 6-23/8 * * 0-5 /bin/bash /home/lab/Downloads/modul1/soal3/soal3.sh
