@@ -5,7 +5,7 @@
 
 
 ## Soal 1
-### Deskripsi
+### Soal
 Whits adalah seorang mahasiswa teknik informatika. Dia mendapatkan tugas praktikum untuk membuat laporan berdasarkan data yang ada pada file "Sample-Superstore.csv". Namun dia tidak dapat meyelesaikan tugas tersebut. Laporan yang diminta berupa:
 
 **a**. Tentukan wilayah bagian (state) yang memiliki keuntungan (profit) paling sedikit.
@@ -14,7 +14,7 @@ Whits adalah seorang mahasiswa teknik informatika. Dia mendapatkan tugas praktik
 
 **c**. Tampilkan 10 produk (product name) yang memiliki keuntungan (profit) paling sedikit berdasarkan 2 negara bagian (state) hasil poin b.
 
-### Pembahasan
+### Jawaban
 ```bash
 #!/bin/bash
 
@@ -40,7 +40,7 @@ awk -F "\t" -v D=$C2 'NR>1{if($11~D)check[$17]+=$21} END{for(i in check) printf 
 ```
 
 ## Soal2
-### Deskripsi
+### Deskripsi 
 **a**. Membuat sebuah script bash yang dapat menghasilkan password secara acak sebanyak 28 kaeakter yang terdapat huruf besar, huruf kecil, angka.
 
 **b**. Password acak tersebut disimpan pada file berekstensi .txt dengan nama berdasarkan argumen yang diinputkan dan **HANYA berupa alphabet**.
