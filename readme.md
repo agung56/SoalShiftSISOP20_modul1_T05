@@ -153,6 +153,19 @@ done
 ```
 **Penjelasan Script**
 
+`for tajuk in $@` Semua input yang dimasukkan pada program tersebut akan dijadikan sebagai **$@** dan kemudian dimasukkan kedalam variabel dengan nama **tajuk**.
+
+`do
+
+time=date +%H -r $tajuk`
+
+Langkah selanjutnya adalah mencari atau mendapatkan jumlah jam (0-23) ketika file tersebut dibuat dimana pada soal yang tertera untuk melakukan enkripsi file tersebut dengan menggunakan algoritma caesar cipher yang menggunakan jumlah jam sebagai kunci(*key*) untuk menggeser huruf per huruf pada file tersebut. **date +%H** merupakan *command* yang digunakan untuk mendapatkan data berupa waktu file tersebut dibuat, dan **-r** merupakan *command* yang digunakan untuk membaca file yang akan dicari waktu file tersebut dibuat.
+
+`tajuklama=basename $tajuk .txt`
+
+Karena file yang dienkripsi hanya huruf atau alfabet saja, oleh karena itu digunakanlah *command* **basename** untuk menghapus ekstensi file yaitu .txt.
+
+
 #### Soal 2 D
 Code : https://github.com/agung56/SoalShiftSISOP20_modul1_T05/blob/master/soal2/soal_2dekripsi.sh
 
@@ -244,3 +257,35 @@ cat wget.log >> wget.log.bak
 rm wget.log
 ```
 **Penjelasan Script**
+
+Sebelum memindahkan file gambar ke folder kenangan ataupun duplikat, folder harus telah dibuat terlebih dahulu dengan menggunakan *command* `mkdir kenangan 
+mkdir duplicate`.
+
+`coba=ls | grep "pdkt_kusuma_" | cut -d "_" -f 3 | sort -n | tail -1` 
+
+Setelah folder dibuat, gambar diurutkan mulai dari nomor 1 hingga nomor 28. *Command* **ls** digunakan untuk menampilkan semua *list* file yang ada pada direktori. Karena yang dibutuhkan hanya file berupa gambar, maka digunakan *command* **grep** untuk mengambil file dengan nama **pdkt_kusuma_**. *Command* `cut -d "_" -f 3` digunakan untuk mengambil hanya variabel ketiga dari nama file dengan **-d "_"** sebagai pemisah (separator) dan **-f 3** untuk mengambil variabel ketiga dimana variabel tersebut berisi angka atau nomor urut file tersebut. *Command* `arr=""` tersebut masih kosong dan nantinya akan diisi oleh lokasi dari gambar yang akan dijelaskan pada baris berikutnya. Setelah itu dilakukan *looping* untuk membaca atau memeriksa gambar satu-persatu.
+
+`lokasi=cat wget.log | grep "Location" | head -$i | tail -1 | cut -d " "  -f 2`
+
+Selama proses *loop* berlangsung yang pertama dilakukan adalah mencari lokasi file gambar tersebut yang dapat diperoleh dari file wget.log. *Command* `grep "Location"` untuk mengambil lokasinya saja, `head -$i | tail -1 | cut -d " "  -f 2` kemudian file tersebut disusun dengan nilai **$i** sesuai dengan proses *loop* diatasnya yang kemudian diambil lokasi terbawah. Misal ada total 28 file, ketika **$i=5** maka akan diambil 5 file teratas dari 28 file tersebut dan kemudian diambil 1 yang terbawah berdasarkan 5 file tadi dengan menggunakan *command* **tail -1**. Setelah itu diambil hanya variabel kedua dari lokasi tadi karena nilai pada variabel tersebut bersifat unik yang membedakan antara file satu dengan file yang lain.
+
+`duplikat=echo -e $arr | awk -v loc=$lokasi 'BEGIN{duplikatlagi=0}{if(loc==$0) duplikatlagi=1} END {printf "%d", duplikatlagi}'`
+
+Setelah mendapatkan lokasi yang bersifat unik tadi, langkah yang dilakukan berikutnya adalah memeriksa apakah ada file lain yang memiliki lokasi yang sama dengan file yang lokasinya telah didapatkan tadi. Yang pertama dilakukan adalah menampilkan variabel **arr** yang masih kosong tadi diisi dengan nilai lokasi file Kemudian lokasi yang telah didapat tadi dimasukkan ke `awk -v loc=$lokasi 'BEGIN{duplikatlagi=0}{if(loc==$0) duplikatlagi=1} END {printf "%d", duplikatlagi}'` dimana **loc** adalah lokasi file yang telah didapat tadi dan kemudian diperiksa jika nilai loc tadi sama dengan nilai lokasi pada **arr** maka gambar tersebut duplikat atau ada lebih dari satu gambar yang serupa. 
+```
+if [[ $duplikat == 0 ]]
+then
+
+arr="$arr$lokasi\n"
+mv pdkt_kusuma_$i kenangan/kenangan_$i
+else
+mv pdkt_kusuma_$i duplicate/duplicate_$i
+fi
+done
+```
+Setelah mendapatkan nilai dari **$duplikat**(0 atau 1), nilai tersebut dicek jika **$duplikat==0** maka file tersebut bukan duplikat dan selanjutnya file tersebut dipindah kedalam folder kenangan dan sebaliknya jika **$duplikat!=0** maka file tersebut dipindah kedalam folder duplikat. *Command* `arr="$arr$lokasi\n"` digunakan untuk memasukkan nilai lokasi tadi kedalam bersama varibel arr yang masih kosong kedalam variabel arr agar variabel **$arr** pada variabel **$duplikat** dapat diisi lokasi file yang lain.
+
+`cat wget.log >> wget.log.bak
+rm wget.log` 
+
+Setelah semua file dipindah kedalam folder kenangan atau folder duplikat, langkah yang terakhir adalah membuat file dengan ekstensi .log.bak sesuai dengan petunjuk yang diberikan, yaitu dengan menyalin isi file **wget.log** kedalam **wget.log.bak** dengan menggunakan *command* **cat** dan terakhir menghapus file **wget.log** karena sudah tidak digunakan lagi.
