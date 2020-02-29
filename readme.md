@@ -75,6 +75,7 @@ echo ""
 ```
 
 **Penjelasan Script**
+
 `awk -F "\t" -v C=$C1 -v D=$C2 '{if (match ($11,C)||match ($11,D)) seen[$17]+=$NF} END{for(i in seen) printf "%s,%f\n",i, seen[i]}' Sample-Superstore.tsv`
 
 Menggunakan fungsi awk, dan untuk **-F '\t'** merupakan *syntax* untuk pemisah (*separator*) awk sesuai dengan format file .tsv , lalu untuk `-v C=$C1** **-v D=C2` adalah pemanggilan variabel sebelumnya yaitu **$C1** dan **$C2** yang dijadikan untuk patokan pada soal 1B. Selanjutnya untuk `'{if (match ($11,C)||match ($11,D)) seen[$17]+=$NF} END{for(i in seen)` akan dilakukan pengecekan untuk variabel C atau D apakah ada yang sama pada kolom ke 11, jika ada maka lanjut ke proses selanjutnya yang dimana melihat kolom ke 17 untuk dijadikan patokan produknya.  Selanjutnya adalah hasil diprint yaitu hasil pertama berupa *string* (**%s**) dan hasil kedua berupa *float* (**%f**) dan dipisahkan dengan tanda koma(,). *Command* terakhir pada baris ini adalah memasukkan file yang akan dieksekusi sesuai dengan *command* sebelumnya yaitu pada file **Sample-Superstore.tsv**.
@@ -89,82 +90,76 @@ Selanjutnya dari hasil *command* sebelumnya, akan dilanjutkan dengan *command* *
 
 ## Soal2
 ### Deskripsi Soal
-**a**. Membuat sebuah script bash yang dapat menghasilkan password secara acak sebanyak 28 kaeakter yang terdapat huruf besar, huruf kecil, angka.
+**A**. Membuat sebuah script bash yang dapat menghasilkan password secara acak sebanyak 28 kaeakter yang terdapat huruf besar, huruf kecil, angka.
 
-**b**. Password acak tersebut disimpan pada file berekstensi .txt dengan nama berdasarkan argumen yang diinputkan dan **HANYA berupa alphabet**.
+**B**. Password acak tersebut disimpan pada file berekstensi .txt dengan nama berdasarkan argumen yang diinputkan dan **HANYA berupa alphabet**.
 
-**c**. Kemudian supaya **file.txt** tersebut tidak mudah diketahui maka nama filenya akan dienkripsi dengan menggunakan konversi huruf (string manipulation) yang disesuaikan dengan jam (0-23) dibuatnya file tersebut dengan program terpisah
+**C**. Kemudian supaya **file.txt** tersebut tidak mudah diketahui maka nama filenya akan dienkripsi dengan menggunakan konversi huruf (*string manipulation*) yang disesuaikan dengan jam (0-23) dibuatnya file tersebut dengan program terpisah
 
-**d**. Membuat script untuk mendekripsi file yang telah di enkrip
+**D**. Membuat script untuk mendekripsi file yang telah di enkripsi
 
 ### Pembahasan
 
-#### Soal 2(a dan b)
+#### Soal 2(A dan B)
 Code : https://github.com/agung56/SoalShiftSISOP20_modul1_T05/blob/master/soal2/soal2.sh
 
-#### Soal 2c
+* Script untuk 2 A dan B
+```
+#!/bin/bash
+password=`cat /dev/urandom | tr -d -c 'A-Za-z0-9' | fold -w 28 | head -n 1
+filename=`echo $1 | tr -d -c 'A-Za-z'`
+
+echo $password > $filename.txt
+```
+
+**Penjelasan Script**
+
+`Password=cat /dev/urandom`
+
+Membuat variabel *password* dan didalamnya menggunakan dev/urandom yang dimana dev/urandom ini merupakan sejenis library bawaan dari linux untuk membuat karakter secara acak (semua karakter baik angka, simbol, huruf, dll).
+
+`| tr -d -c 'A-Za-z0-9'`
+
+Selanjutnya dari hasil tersebut maka akan dilakukan *translate* dengan *command* **tr** yang dimana *translate* akan membuat suatu *infinite looping* menggunakan semua karakter dengan urandom sebelumnya sehingga perlu dilakukan *command* selanjutnya untuk memenuhi keperluan untuk isi *password*, *command* **-d** dan **-c** adalah *command* untuk *delete* dan *complement* atau **"hapus kecuali"**, sehingga semua karakter yang di*translate* tadi akan dihapus kecuali **'A-Za-z0-9'** yaitu permintaan dari soal
+
+`| fold -w 28 | head -n 1`
+
+Lalu dari *translate* tersebut dilakukan *command* **fold** untuk mengambil karakter dan dengan *command* **-w 28** yang artinya diambil karakter selebar **width** 28  karakter dan diambil hanya bagian **head atau paling atas** saja karena jika tidak diambil maka tetap yang ditampilkan adalah *infinite loop* tersebut dengan 28 karakter kesamping dan tidak ada batasan bawahnya maka dari itu dilakukan pengambilan head.
+
+`filename=echo $1 | tr -d -c 'A-Za-z'`
+
+Yang selanjutnya adalah dengan membuat variabel filename untuk nama file dengan cara **translate** yang sama dengan proses sebelumnya akan tetapi yang membedakan adalah yang dilakukan **hapus kecuali** hanyalah huruf kecil dan kapital (sesuai soal).
+
+`echo $password > $filename.txt`
+
+Lalu yang terakhir adalah memasukkan variabel **password** tadi ke dalam suatu file dengan nama sesuai dengan variabel **filename** tadi dan dengan ekstensi **.txt**
+
+#### Soal 2 C
 Code : https://github.com/agung56/SoalShiftSISOP20_modul1_T05/blob/master/soal2/soal_2enkripsi.sh
-#### Soal 2d
+
+* Script untuk 2 C
+#### Soal 2 D
 Code : https://github.com/agung56/SoalShiftSISOP20_modul1_T05/blob/master/soal2/soal_2dekripsi.sh
+
+* Script untuk 2 D
 
 ## Soal 3
 ### Deskripsi Soal
-**a**. Membuat script untuk mendownload 28 gambar dari "https://loremflickr.com/320/240/cat" menggunakan command **wget** dan menyimpan file dengan nama "pdkt_kusuma_NO" serta menyimpan **log message wget** kedalam sebuah file "wget.log"
+**A**. Membuat script untuk mendownload 28 gambar dari "https://loremflickr.com/320/240/cat" menggunakan command **wget** dan menyimpan file dengan nama "pdkt_kusuma_NO" serta menyimpan **log message wget** kedalam sebuah file "wget.log"
 
-**b**. Membuat crontab download file **setiap 8 jam dimulai dari jam 6.05 setiap hari kecuali hari sabtu**
+**B**. Membuat crontab download file **setiap 8 jam dimulai dari jam 6.05 setiap hari kecuali hari sabtu**
 
-**c**. Membuat script untuk mengidentifikasi gambar yang identik dari keseluruhan gambar yang terdownload tadi. Bila terindikasi sebagai gambar yang identik, maka sisakan 1 gambar dan pindahkan sisa file identik tersebut ke dalam folder ./duplicate dengan format filename "duplicate_nomor". Setelah itu lakukan pemindahan semua gambar yang tersisa ke dalam folder ./kenangan dengan format filename "kenangan_nomor". Setelah tidak ada gambar di *current directory*, maka lakukan backup seluruh log menjadi ekstensi ".log.bak".
+**C**. Membuat script untuk mengidentifikasi gambar yang identik dari keseluruhan gambar yang terdownload tadi. Bila terindikasi sebagai gambar yang identik, maka sisakan 1 gambar dan pindahkan sisa file identik tersebut ke dalam folder ./duplicate dengan format filename "duplicate_nomor". Setelah itu lakukan pemindahan semua gambar yang tersisa ke dalam folder ./kenangan dengan format filename "kenangan_nomor". Setelah tidak ada gambar di *current directory*, maka lakukan backup seluruh log menjadi ekstensi ".log.bak".
 
 ### Pembahasan
 
-#### Soal 3.a
+#### Soal 3 A
 Code : https://github.com/agung56/SoalShiftSISOP20_modul1_T05/blob/master/soal3/soal3.sh
-#### Soal 3.b
+* Script untuk 3 A
+#### Soal 3 B
 Code : https://github.com/agung56/SoalShiftSISOP20_modul1_T05/blob/master/soal3/crontab.txt
+* Script untuk 3 B
 
-#### Soal 3.c
+#### Soal 3 C
 Code : https://github.com/agung56/SoalShiftSISOP20_modul1_T05/blob/master/soal3/soal3c.sh
-
-
-
-
-
-
-
-
-
-# Pembahasan Nomor 2
-
-
-> ## #Script untuk 2 A
->
-**#!/bin/bash**
-**password=`cat /dev/urandom | tr -d -c 'A-Za-z0-9' | fold -w 28 | head -n 1**
-**filename=`echo $1 | tr -d -c 'A-Za-z'**`
-
-**echo $password > $filename.txt**
-
-
-
-## Penjelasan Script
-
-
->**password=`cat /dev/urandom**>
-
-membuat variabel password dan didalamnya menggunakan dev/urandom yang dimana dev/urandom ini merupakan sejenis library bawaan dari linux untuk membuat karakter random (semua karakter baik angka, simbol, huruf, dll**.
-
->**| tr -d -c 'A-Za-z0-9'**>
-
-selanjutnya dari hasil tersebut maka akan dilakukan translate dengan commantd **tr** yang dimana translate akan membuat suatu infinite looping menggunakan semua karakter dengan urandom sebelumnya sehingga perlu dilakukan command selanjutnya untuk memenuhi keperluan untuk isi password, command **-d dan -c** adalah command untuk delete dan complement atau **"hapus kecuali"**, sehingga semua karakter yang di translate tadi akan dihapus kecuali **'A-Za-z0-9'** yaitu permintaan dari soal
-
->**| fold -w 28 | head -n 1**>
-
-lalu dari translate tersebut dilakukan command fold untuk mengambil karakter dan dengan command **-w 28** yang artinya diambil karakter selebar **width** 28  karakter dan diambil hanya bagian **head atau paling atas** saja karena jika tidak diambil maka tetap yang ditampilkan adalah infinite loop tersebut dengan 28 karakter kesamping dan tidak ada batasan bawahnya maka dari itu dilakukan pengambilan head.
-
->**filename=`echo $1 | tr -d -c 'A-Za-z'**>
-
-yang selanjutnya adalah dengan membuat variabel filename untuk nama file dengan cara **translate** yang sama dengan proses sebelumnya akan tetapi yang membedakan adalah yang dilakukan **hapus kecuali** hanyalah huruf kecil dan kapital (sesuai soal).
-
->**echo $password > $filename.txt**>
-
-lalu yang terakhir adalah memasukkan variabel **password** tadi ke dalam suatu file dengan nama sesuai dengan variabel **filename** tadi dan dengan ekstensi **.txt**
+* Script untuk 3 C
