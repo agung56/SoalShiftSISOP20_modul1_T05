@@ -314,7 +314,7 @@ mv pdkt_kusuma_$i duplicate/duplicate_$i
 fi
 done
 ```
-Setelah mendapatkan nilai dari **$duplikat**(0 atau 1), nilai tersebut dicek jika **$duplikat==0** maka file tersebut bukan duplikat dan selanjutnya file tersebut dipindah kedalam folder kenangan dan sebaliknya jika **$duplikat!=0** maka file tersebut dipindah kedalam folder duplikat. *Command* `arr="$arr$lokasi\n"` digunakan untuk memasukkan nilai lokasi tadi kedalam bersama varibel arr yang masih kosong kedalam variabel arr agar variabel **$arr** pada variabel **$duplikat** dapat diisi lokasi file yang lain.
+Setelah mendapatkan nilai dari **$duplikat** (0 atau 1), nilai tersebut dicek jika **$duplikat==0** maka file tersebut bukan duplikat dan selanjutnya file tersebut dipindah kedalam folder kenangan dan sebaliknya jika **$duplikat!=0** maka file tersebut dipindah kedalam folder duplikat. *Command* `arr="$arr$lokasi\n"` digunakan untuk memasukkan nilai lokasi tadi kedalam bersama varibel arr yang masih kosong kedalam variabel arr agar variabel **$arr** pada variabel **$duplikat** dapat diisi lokasi file yang lain.
 
 `cat wget.log >> wget.log.bak
 rm wget.log` 
@@ -325,3 +325,5 @@ Setelah semua file dipindah kedalam folder kenangan atau folder duplikat, langka
 * Tingkat kesulitan dari soal yang sangat sulit bagi pemula seperti kami
 * Terdapat beberapa materi yang tidak diberikan pada sesi lab yang kemudian muncul pada soal shift
 * File crontab yang tidak berjalan sesuai dengan keinginan
+* Soal 3 C yang menurut kami sangat sulit karena sebelumnya tidak pernah diajarkan pada sesi lab maupun pada saat asistensi,     kesulitan saat membuat script untuk mengidentifikasi apakah gambar tersebut merupakan duplikat atau bukan 
+* Sedikit Kebingungan saat hendak membuat program membuat password secara acak
