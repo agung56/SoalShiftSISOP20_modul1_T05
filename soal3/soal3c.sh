@@ -1,7 +1,7 @@
 #!/bin/bash
 
-kenangan=`mkdir kenangan`
-duplicate=`mkdir duplicate`
+mkdir kenangan
+mkdir duplicate
 
 coba=`ls | grep "pdkt_kusuma_" | cut -d "_" -f 3 | sort -n | tail -1`
 
