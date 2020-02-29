@@ -5,20 +5,90 @@
 
 
 ## Soal 1
-### Soal
+### Deskripsi Soal
 Whits adalah seorang mahasiswa teknik informatika. Dia mendapatkan tugas praktikum untuk membuat laporan berdasarkan data yang ada pada file "Sample-Superstore.csv". Namun dia tidak dapat meyelesaikan tugas tersebut. Laporan yang diminta berupa:
 
-**a**. Tentukan wilayah bagian (state) yang memiliki keuntungan (profit) paling sedikit.
+**A**. Tentukan wilayah bagian (state) yang memiliki keuntungan (profit) paling sedikit.
 
-**b**. Tampilkan 2 negara bagian (state) yang memiliki keuntungan (profit) paling sedikit berdasarkan hasil poin a.
+**B**. Tampilkan 2 negara bagian (state) yang memiliki keuntungan (profit) paling sedikit berdasarkan hasil poin A.
 
-**c**. Tampilkan 10 produk (product name) yang memiliki keuntungan (profit) paling sedikit berdasarkan 2 negara bagian (state) hasil poin b.
+**C**. Tampilkan 10 produk (product name) yang memiliki keuntungan (profit) paling sedikit berdasarkan 2 negara bagian (state) hasil poin B.
 
-### Jawaban
-Source Code : https://github.com/agung56/SoalShiftSISOP20_modul1_T05/blob/master/soal1/soal1.sh
+### Pembahasan
+Code : https://github.com/agung56/SoalShiftSISOP20_modul1_T05/blob/master/soal1/soal1.sh
+
+* Script untuk 1 A
+```
+A=`awk -F '\t' 'NR>1{region[$13]+=$21} END{for( i in region) printf "%s,%f\n",i , region[i]}' Sample-Superstore.tsv | sort -g -t"," -k 2 | awk -F "," 'NR<2 {printf "%s\n", $1 }'`
+echo $A
+echo""
+```
+**Penjelasan Script**
+
+`A=awk -F '\t' 'NR>1{region[$13]+=$21} END{for( i in region) printf "%s,%f\n",i , region[i]}' Sample-Superstore.tsv`
+
+Variabel A diinisiasi dan dilakukan fungsi awk, dan untuk -F '\t' merupakan *syntax* untuk *separator* awk sesuai dengan format file .tsv , selanjutnya untuk fungsi **NR>1** yaitu melihat dari *Row* (baris) lebih dari satu yang dimana baris pertama tidak dihitung. Untuk *command* `{region[$13]+=$21} END{for( i in region)` selanjutnya merupakan pengecekan pada kolom ke 21 yang dimana hasilnya akan dijumlahkan dan digunakan bersamaan dengan kolom ke 13 pada variabel *region*. Selanjutnya adalah hasil di print yaitu hasil pertama berupa *string* (**%s**) dan hasil kedua berupa *float* (**%f**) yang dipisahkan dengan tanda koma (,). *Command* terakhir pada line ini adalah memasukkan file yang akan dieksekusi sesuai dengan *command* sebelumnya yaitu pada file **Sample-Superstore.tsv**.
+
+`|  sort -g -t"," -k 2`
+
+Selanjutnya dari hasil tersebut akan muncul *output* berupa nama *state* beserta profit yang sudah ditambahkan dan dipisahkan dengan tanda koma **' , '**. Selanjutnya akan dilakukan pengurutan (*sorting*)  dengan menggunakan *command* **-g** yaitu *sorting numeric* dan **-t** yaitu pemisah (*separator*) yang dimana menggunakan pemisah koma **' , '**. Selanjutnya akan dilakukan adalah *syntax* **-k 2** yaitu mengambil kunci (*key*) variabel kedua yang dipisah pada dengan tanda koma, artinya yang diambil adalah angkanya karena *output* pada proses sebelumnya adalah **Region,xxxxx (angka)** yang dimana angka tersebut yang dijadikan patokan untuk *command* selanjutnya.
+
+`| awk -F "," 'NR<2 {printf "%s\n", $1 }'
+echo $A
+echo ""`
+
+Selanjutnya dari hasil *command* sebelumnya, akan dilanjutkan dengan *command* `awk -F","` yaitu *command* awk dan -F sebagai pemisah (*separator*) dan tanda koma sebagai pemisah yang diinput. Setelah itu untuk *command* `NR<2 {printf "%s\n", $1 }` karena yang ingin ditampilkan adalah baris pertama yaitu yang memiliki profit terkecil maka yang dilakukan adalah memilih *number of rows* kurang dari 2, yaitu **row pertama**, dan melakukan printf yaitu menampilkan **string** pada variabel pertama antara pemisah yaitu *variable state*. **misal : Central,XXXX** maka yang akan ditampilkan pada akhirnya adalah **Central**. dan langkah terakhir adalah mencetak **$A** yaitu merupakan fungsi keseluruhan. dan **echo ""** berfungsi untuk memberikan spasi (jarak) berupa enter.
+
+* Script untuk 1 B
+```
+B=`awk -F "\t" -v A=$A 'NR>1{if($13~A)check[$11]+=$21} END{for(i in check) printf "%s,%f\n",i, check[i]}' Sample-Superstore.tsv | sort -g -t"," -k 2 | awk -F "," 'NR<3 {printf "%s\n", $1 }'`
+C1=`echo $B | awk -F " " '{printf $1}'`
+C2=`echo $B | awk -F " " '{printf $2}'`
+echo $C1 $C2
+echo""
+```
+ **Penjelasan Script**
+ 
+`B=awk -F "\t" -v A=$A 'NR>1{if($13~A)check[$11]+=$21} END{for(i in check) printf "%s,%f\n",i, check[i]}' Sample-Superstore.tsv`
+
+Variabel B diinisiasi dan dilakukan fungsi awk, dan untuk -F '\t' merupakan *syntax* untuk pemisah (*separator*) awk sesuai dengan format file .tsv , lalu untuk **-v A=$A** adalah pemanggilan variabel sebelumnya yaitu **$A** yang dijadikan untuk patokan pada soal 1B. Selanjutnya untuk fungsi **NR>1** yaitu melihat dari baris (*Row*) lebih dari satu yang dimana baris pertama tidak dihitung. Lalu untuk `{if($13~A)check[$11]+=$21} END{for( i in check)` akan dicek bahwa jika pada kolom ke 13 adalah variabel A yang merupakan *region central*, maka variabel **check** diminta untuk melihat kolom 21 dan kolom 11 untuk dijumlahkan dan dijadikan satu jika ada yang sama. Selanjutnya adalah hasil diprint yaitu hasil pertama berupa *string* (**%s**) dan hasil kedua berupa *float* (**%f**) dan dipisahkan dengan tanda koma. *Command* terakhir pada line ini adalah memasukkan file yang akan dieksekusi sesuai dengan command sebelumnya yaitu pada file **Sample-Superstore.tsv**.
+
+`|  sort -g -t"," -k 2`
+
+Selanjutnya dari hasil tersebut akan muncul keluaran (*output*) berupa nama *state* beserta profit yang sudah ditambahkan dan dipisahkan dengan tanda koma **' , '**. Selanjutnya akan dilakukan pengurutan (*sorting*)  dengan menggunakan *command* **-g** yaitu *sorting numeric* dan **-t** yaitu pemisah (*separator*) yang dimana menggunakan pemisah koma **' , '**. Selanjutnya akan dilakukan adalah *syntax* **-k 2** yaitu mengambil kunci (*key*) variabel kedua yang dipisah pada dengan tanda koma, artinya yang diambil adalah angkanya karena *output* pada proses sebelumnya adalah **State,xxxxx (angka)**. yang dimana angka tersebut yang dijadikan patokan untuk *command* selanjutnya.
+
+`| awk -F "," 'NR<3 {printf "%s\n", $1 }'`
+
+Selanjutnya dari hasil *command* sebelumnya, akan dilanjutkan dengan *command* **awk -F","** yaitu *command* awk dan -F sebagai pemisah (*separator*) dan tanda koma sebagai pemisah yang diinput. setelah itu untuk *command* `NR<3 {printf "%s\n", $1 }'` karena yang ingin ditampilkan 2 baris pertama yaitu yang memiliki profit terkecil maka yang dilakukan adalah memilih *number of rows* kurang dari 3, yaitu **row pertama dan kedua**, dan melakukan **printf** yaitu menampilkan **string** pada variable pertama antara pemisah yaitu variabel *state*. **misal : Texas,XXXX** maka yang akan ditampilkan pada akhirnya adalah **Texas**
+
+`C1=echo $B | awk -F " " '{printf $1}'
+C2=echo $B | awk -F " " '{printf $2}'
+echo $C1 $C2
+echo""`
+
+Selanjutnya adalah memasukkan variabel **$B** yaitu variabel pertamanya menjadi C1 yang dimana akan digunakan untuk soal 1C selanjutnya, begitu juga untuk variabel C2, hanya saja yang membedakan adalah yang dimasukkan ke C2 adalah variabel kedua dari **$B** karena hasil dari **$B** adalah **XXXX YYYY**
+
+* Script untuk 1 C
+```
+awk -F "\t" -v C= $C1 -v D= $C2 '{if (match ($11,C)||match ($11,D)) seen[$17]+=$NF} END{for(i in seen) printf "%s,%f\n",i, seen[i]}' Sample-Superstore.tsv | sort -g -t"," -k 2 | awk -F "," 'NR<11 {printf "%s\n", $1 }'
+echo ""
+```
+
+**Penjelasan Script**
+`awk -F "\t" -v C=$C1 -v D=$C2 '{if (match ($11,C)||match ($11,D)) seen[$17]+=$NF} END{for(i in seen) printf "%s,%f\n",i, seen[i]}' Sample-Superstore.tsv`
+
+Menggunakan fungsi awk, dan untuk **-F '\t'** merupakan *syntax* untuk pemisah (*separator*) awk sesuai dengan format file .tsv , lalu untuk `-v C=$C1** **-v D=C2` adalah pemanggilan variabel sebelumnya yaitu **$C1** dan **$C2** yang dijadikan untuk patokan pada soal 1B. Selanjutnya untuk `'{if (match ($11,C)||match ($11,D)) seen[$17]+=$NF} END{for(i in seen)` akan dilakukan pengecekan untuk variabel C atau D apakah ada yang sama pada kolom ke 11, jika ada maka lanjut ke proses selanjutnya yang dimana melihat kolom ke 17 untuk dijadikan patokan produknya.  Selanjutnya adalah hasil diprint yaitu hasil pertama berupa *string* (**%s**) dan hasil kedua berupa *float* (**%f**) dan dipisahkan dengan tanda koma(,). *Command* terakhir pada baris ini adalah memasukkan file yang akan dieksekusi sesuai dengan *command* sebelumnya yaitu pada file **Sample-Superstore.tsv**.
+
+`| sort -g -t"," -k 2`
+
+Selanjutnya dari hasil tersebut akan muncul *output* berupa nama *state* beserta profit yang sudah ditambahkan dan dipisahkan dengan tanda koma **' , '**. Selanjutnya akan dilakukan pengurutan (*sorting*)  dengan menggunakan *command* **-g** yaitu *sorting numeric* dan **-t** yaitu pemisah (*separator*) yang dimana menggunakan pemisah koma **' , '**. Kemudian *syntax* **-k 2** digunakan untuk mengambil *key* atau kunci variabel kedua yang dipisah pada dengan tanda koma, artinya yang diambil adalah angkanya karena *output* pada proses sebelumnya adalah **Produk,xxxxx (angka)** yang dimana angka tersebut yang dijadikan patokan untuk *command selanjutnya*.
+
+`awk -F "," 'NR<11 {printf "%s\n", $1 }`
+
+Selanjutnya dari hasil *command* sebelumnya, akan dilanjutkan dengan *command* **awk -F","** yaitu *command* awk dan -F sebagai pemisah (*separator*) dan tanda koma sebagai pemisah yang diinput. Setelah itu untuk *command* `NR<11 {printf "%s\n", $1 }'` karena yang ingin ditampilkan 10 baris pertama yaitu yang memiliki profit terkecil maka yang dilakukan adalah memilih *number of rows* kurang dari 11, yaitu **row pertama sampai ke sepuluh**, dan melakukan printf yaitu menampilkan **string** yang diambil dari nama produk
 
 ## Soal2
-### Deskripsi 
+### Deskripsi Soal
 **a**. Membuat sebuah script bash yang dapat menghasilkan password secara acak sebanyak 28 kaeakter yang terdapat huruf besar, huruf kecil, angka.
 
 **b**. Password acak tersebut disimpan pada file berekstensi .txt dengan nama berdasarkan argumen yang diinputkan dan **HANYA berupa alphabet**.
@@ -38,7 +108,7 @@ Code : https://github.com/agung56/SoalShiftSISOP20_modul1_T05/blob/master/soal2/
 Code : https://github.com/agung56/SoalShiftSISOP20_modul1_T05/blob/master/soal2/soal_2dekripsi.sh
 
 ## Soal 3
-### Deskripsi
+### Deskripsi Soal
 **a**. Membuat script untuk mendownload 28 gambar dari "https://loremflickr.com/320/240/cat" menggunakan command **wget** dan menyimpan file dengan nama "pdkt_kusuma_NO" serta menyimpan **log message wget** kedalam sebuah file "wget.log"
 
 **b**. Membuat crontab download file **setiap 8 jam dimulai dari jam 6.05 setiap hari kecuali hari sabtu**
@@ -55,88 +125,13 @@ Code : https://github.com/agung56/SoalShiftSISOP20_modul1_T05/blob/master/soal3/
 #### Soal 3.c
 Code : https://github.com/agung56/SoalShiftSISOP20_modul1_T05/blob/master/soal3/soal3c.sh
 
-# Pembahasan Nomor 1
-
-
-> ## #Script untuk 1 A
->
-**A=`awk -F '\t' 'NR>1{region[$13]+=$21} END{for( i in region) printf "%s,%f\n",i , region[i]}' Sample-Superstore.tsv | sort -g -t"," -k 2 | awk -F "," 'NR<2 {printf "%s\n", $1 }'`
-echo $A
-echo""**
 
 
 
-## Penjelasan Script
-
-
->**A=awk -F '\t' 'NR>1{region[$13]+=$21} END{for( i in region) printf "%s,%f\n",i , region[i]}' Sample-Superstore.tsv**>
-
-Variabel A diinisiasi dan dilakukan fungsi awk, dan untuk -F '\t' merupakan syntax untuk separator awk sesuai dengan format file .tsv , selanjutnya untuk fungsi NR>1 yaitu melihat dari Row (baris) lebih dari satu yang dimana baris petama tidak dihitung. untuk command **{region[$13]+=$21} END{for( i in region)** selanjutnya merupakan pengecekan pada kolom ke 21 yang dimana hasilnya akan dijumlahkan dan digunakan bersamaan dengan kolomg ke 13 pada variabel region. selanjutnya adalah hasil di print yaitu hasil pertama berupa string / **%s** dan hasil kedua berupa fold / **%f**, dan dipisahkan dengan tanda koma. command terakhir pada line ini adalah memasukkan file yang akan dieksekusi sesuai dengan command sebelumnya yaitu pada file **Sample-Superstore.tsv**.
-
->**|  sort -g -t"," -k 2**>
-
-selanjutnya dari hasil tersebut akan muncul output berupa nama state beserta profit yang sudah ditambahkan dan dipisahkan dengan tanda koma **' , '**. selanjutnya akan dilakukan sorting  dengan menggunakan command **-g** yaitu sorting numeric dan **-t** yaitu separator atau pemisah yang dimana menggunakan pemisah koma **' , '**. selanjutnya akan dilakukan adalah syntax **-k 2** yaitu mengambil key atau kunci variabel kedua yang dipisah pada dengan tanda koma, artinya yang diambil adalah angkanya karena output pada proses sebelumnya adalah **Region,xxxxx (angka)**. yang dimana angka tersebut yang dijadikan patokan untuk command selanjutnya.
-
->**| awk -F "," 'NR<2 {printf "%s\n", $1 }'**>
->**echo $A**
->**echo ""**
-
-selanjutnya dari hasil command sebelumnya, akan dilanjutkan dengan command **awk -F"," ** yaitu command awk dan -F sebagai separator dan tanda koma sebagai separator yang diinput. setelah itu untuk command **NR<2 {printf "%s\n", $1 }'** karena yang ingin ditampilkan adalah baris pertama yaitu yang memiliki profit terkecil maka yang dilakukan adalah memilih number of rows kurang dari 2, yaitu **row pertama**, dan melakukan printf yaitu menampilkan **string** pada variable pertama antara pemisah yaitu variable state. **misal : Central,XXXX** maka yang akan ditampilkan pada akhirnya adalah **Central**. dan langkah terakhir adalah mencetak $A yaitu merupakan fungsi keseluruhan. dan **echo ""** berfungsi untuk memberikan space berupa line space (enter)
-
-> ## #Script untuk 1 B
->
-**B=`awk -F "\t" -v A=$A 'NR>1{if($13~A)check[$11]+=$21} END{for(i in check) printf "%s,%f\n",i, check[i]}' Sample-Superstore.tsv | sort -g -t"," -k 2 | awk -F "," 'NR<3 {printf "%s\n", $1 }'`
-C1=`echo $B | awk -F " " '{printf $1}'`
-C2=`echo $B | awk -F " " '{printf $2}'`
-echo $C1 $C2
-echo""**
 
 
 
-## Penjelasan Script
 
-
->**B=`awk -F "\t" -v A=$A 'NR>1{if($13~A)check[$11]+=$21} END{for(i in check) printf "%s,%f\n",i, check[i]}' Sample-Superstore.tsv**>
-
-Variabel B diinisiasi dan dilakukan fungsi awk, dan untuk -F '\t' merupakan syntax untuk separator awk sesuai dengan format file .tsv , lalu untuk **-v A=$A** adalah pemanggilan variabel sebelumnya yaitu $A yang dijadikan untuk patokan pada soal 1b. selanjutnya untuk fungsi NR>1 yaitu melihat dari Row (baris) lebih dari satu yang dimana baris petama tidak dihitung. lalu untuk **{if($13~A)check[$11]+=$21} END{for( i in check)** akan dicek bahwa jika pada kolom ke 13 adalah variabel A yang merupakan region central, maka variabel check diminta untuk melihat kolom 21 dan kolom 11 untuk dijumlahkan dan dijadikan satu jika ada yang msama.  selanjutnya adalah hasil di print yaitu hasil pertama berupa string / **%s** dan hasil kedua berupa fold / **%f**, dan dipisahkan dengan tanda koma. command terakhir pada line ini adalah memasukkan file yang akan dieksekusi sesuai dengan command sebelumnya yaitu pada file **Sample-Superstore.tsv**.
-
->**|  sort -g -t"," -k 2**>
-
-selanjutnya dari hasil tersebut akan muncul output berupa nama state beserta profit yang sudah ditambahkan dan dipisahkan dengan tanda koma **' , '**. selanjutnya akan dilakukan sorting  dengan menggunakan command **-g** yaitu sorting numeric dan **-t** yaitu separator atau pemisah yang dimana menggunakan pemisah koma **' , '**. selanjutnya akan dilakukan adalah syntax **-k 2** yaitu mengambil key atau kunci variabel kedua yang dipisah pada dengan tanda koma, artinya yang diambil adalah angkanya karena output pada proses sebelumnya adalah **State,xxxxx (angka)**. yang dimana angka tersebut yang dijadikan patokan untuk command selanjutnya.
-
->**| awk -F "," 'NR<3 {printf "%s\n", $1 }'`**>
-
-selanjutnya dari hasil command sebelumnya, akan dilanjutkan dengan command **awk -F"," ** yaitu command awk dan -F sebagai separator dan tanda koma sebagai separator yang diinput. setelah itu untuk command **NR<3 {printf "%s\n", $1 }'** karena yang ingin ditampilkan adalah baris 2 baris pertama yaitu yang memiliki profit terkecil maka yang dilakukan adalah memilih number of rows kurang dari 3, yaitu **row pertama dan kedua**, dan melakukan printf yaitu menampilkan **string** pada variable pertama antara pemisah yaitu variable state. **misal : Texas,XXXX** maka yang akan ditampilkan pada akhirnya adalah **Texas**
-
->**C1=`echo $B | awk -F " " '{printf $1}'`
-C2=`echo $B | awk -F " " '{printf $2}'`
-echo $C1 $C2
-echo""**>
-
-selanjutnya adalah memasukkan variabel $B yaitu variabel pertamanya menjadi C1 yang dimana akan digunakan untuk soal 1c selanjutnya, begitu juga untuk variabel C2, hanya saja yang membedakan adalah yang dimasukkan ke C2 adalah variabel kedua dari $B karea hasil dari $B adalah **XXXX YYYY**
-
-> ## #Script untuk 1 C
->
-**awk -F "\t" -v C= $C1 -v D= $C2 '{if (match ($11,C)||match ($11,D)) seen[$17]+=$NF} END{for(i in seen) printf "%s,%f\n",i, seen[i]}' Sample-Superstore.tsv | sort -g -t"," -k 2 | awk -F "," 'NR<11 {printf "%s\n", $1 }'**
-
-**echo ""**
-
-
-
-## Penjelasan Script
-
-
->**awk -F "\t" -v C=$C1 -v D=$C2 '{if (match ($11,C)||match ($11,D)) seen[$17]+=$NF} END{for(i in seen) printf "%s,%f\n",i, seen[i]}' Sample-Superstore.tsv**>
-
-Menggunakan fungsi awk, dan untuk -F '\t' merupakan syntax untuk separator awk sesuai dengan format file .tsv , lalu untuk **-v C=$C1** **-v D=C2** adalah pemanggilan variabel sebelumnya yaitu $C1 dan $C2 yang dijadikan untuk patokan pada soal 1b. selanjutnya untuk **'{if (match ($11,C)||match ($11,D)) seen[$17]+=$NF} END{for(i in seen)** akan dilakukan pengecekan untuk variabel C atau D apakah ada yang sama pada kolom ke 11, jika ada maka lanjut ke proses selanjutnya yang dimana melihat kolom ke 17 untuk dijadikan patokan produknya.  selanjutnya adalah hasil di print yaitu hasil pertama berupa string / **%s** dan hasil kedua berupa fold / **%f**, dan dipisahkan dengan tanda koma. command terakhir pada line ini adalah memasukkan file yang akan dieksekusi sesuai dengan command sebelumnya yaitu pada file **Sample-Superstore.tsv**.
-
->**| sort -g -t"," -k 2**>
-
-selanjutnya dari hasil tersebut akan muncul output berupa nama state beserta profit yang sudah ditambahkan dan dipisahkan dengan tanda koma **' , '**. selanjutnya akan dilakukan sorting  dengan menggunakan command **-g** yaitu sorting numeric dan **-t** yaitu separator atau pemisah yang dimana menggunakan pemisah koma **' , '**. selanjutnya akan dilakukan adalah syntax **-k 2** yaitu mengambil key atau kunci variabel kedua yang dipisah pada dengan tanda koma, artinya yang diambil adalah angkanya karena output pada proses sebelumnya adalah **Produk,xxxxx (angka)**. yang dimana angka tersebut yang dijadikan patokan untuk command selanjutnya.
-
->**awk -F "," 'NR<11 {printf "%s\n", $1 }**>
-
-selanjutnya dari hasil command sebelumnya, akan dilanjutkan dengan command **awk -F"," ** yaitu command awk dan -F sebagai separator dan tanda koma sebagai separator yang diinput. setelah itu untuk command **NR<11 {printf "%s\n", $1 }'** karena yang ingin ditampilkan adalah baris 10 baris pertama yaitu yang memiliki profit terkecil maka yang dilakukan adalah memilih number of rows kurang dari 11, yaitu **row pertama sampai ke sepuluh**, dan melakukan printf yaitu menampilkan **string** yang diambil dari nama produk
 
 # Pembahasan Nomor 2
 
