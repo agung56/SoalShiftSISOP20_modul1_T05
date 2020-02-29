@@ -111,7 +111,6 @@ filename=`echo $1 | tr -d -c 'A-Za-z'`
 
 echo $password > $filename.txt
 ```
-
 **Penjelasan Script**
 
 `Password=cat /dev/urandom`
@@ -136,12 +135,38 @@ Lalu yang terakhir adalah memasukkan variabel **password** tadi ke dalam suatu f
 
 #### Soal 2 C
 Code : https://github.com/agung56/SoalShiftSISOP20_modul1_T05/blob/master/soal2/soal_2enkripsi.sh
-
 * Script untuk 2 C
+```
+#!/bin/bash
+
+for tajuk in $@
+do
+time=`date +%H -r $tajuk`
+tajuklama=`basename $tajuk .txt`
+
+tajukbaru=`echo $tajuklama | caesar $time`
+mv $tajuk $tajukbaru.txt
+done
+```
+**Penjelasan Script**
+
 #### Soal 2 D
 Code : https://github.com/agung56/SoalShiftSISOP20_modul1_T05/blob/master/soal2/soal_2dekripsi.sh
 
 * Script untuk 2 D
+```
+#!/bin/bash
+
+for tajuk in $@
+do
+jam=`date +%H -r $tajuk`
+tajuklama=`basename $tajuk .txt`
+jambaru=`expr 26 - $jam`
+tajukbaru=`echo $tajuklama | caesar $jambaru`
+mv $tajuk $tajukbaru.txt
+done
+```
+**Penjelasan Script**
 
 ## Soal 3
 ### Deskripsi Soal
@@ -156,10 +181,54 @@ Code : https://github.com/agung56/SoalShiftSISOP20_modul1_T05/blob/master/soal2/
 #### Soal 3 A
 Code : https://github.com/agung56/SoalShiftSISOP20_modul1_T05/blob/master/soal3/soal3.sh
 * Script untuk 3 A
+```
+#!/bin/bash
+
+#untuk mengambil 28 gambar berbeda dan dengan nama akhir berbeda
+for gambar in {1..28}
+do
+wget "https://loremflickr.com/320/240/cat" -a wget.log -O "pdkt_kusuma_$gambar"
+done
+```
+**Penjelasan Script**
+
 #### Soal 3 B
 Code : https://github.com/agung56/SoalShiftSISOP20_modul1_T05/blob/master/soal3/crontab.txt
 * Script untuk 3 B
 
+`5 6-23/8 * * 0-5 /bin/bash /home/lab/Downloads/modul1/soal3/soal3.sh`
+
+**Penjelasan Script**
+
 #### Soal 3 C
 Code : https://github.com/agung56/SoalShiftSISOP20_modul1_T05/blob/master/soal3/soal3c.sh
 * Script untuk 3 C
+```
+#!/bin/bash
+
+mkdir kenangan
+mkdir duplicate
+
+coba=`ls | grep "pdkt_kusuma_" | cut -d "_" -f 3 | sort -n | tail -1`
+
+arr=""
+for ((i=1;i<=coba;i=i+1))
+do
+lokasi=`cat wget.log | grep "Location" | head -$i | tail -1 | cut -d " "  -f 2`
+duplikat=`echo -e $arr | awk -v loc=$lokasi 'BEGIN{duplikatlagi=0}{if(loc==$0) duplikatlagi=1} END {printf "%d", duplikatlagi}'`
+
+
+if [[ $duplikat == 0 ]]
+then
+
+arr="$arr$lokasi\n"
+mv pdkt_kusuma_$i kenangan/kenangan_$i
+else
+mv pdkt_kusuma_$i duplicate/duplicate_$i
+fi
+done
+
+cat wget.log >> wget.log.bak
+rm wget.log
+```
+**Penjelasan Script**
