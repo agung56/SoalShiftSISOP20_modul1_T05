@@ -320,3 +320,8 @@ Setelah mendapatkan nilai dari **$duplikat**(0 atau 1), nilai tersebut dicek jik
 rm wget.log` 
 
 Setelah semua file dipindah kedalam folder kenangan atau folder duplikat, langkah yang terakhir adalah membuat file dengan ekstensi .log.bak sesuai dengan petunjuk yang diberikan, yaitu dengan menyalin isi file **wget.log** kedalam **wget.log.bak** dengan menggunakan *command* **cat** dan terakhir menghapus file **wget.log** karena sudah tidak digunakan lagi.
+
+### Kendala yang dihadapi selama proses pengerjaan soal shift
+* Tingkat kesulitan dari soal yang sangat sulit bagi pemula seperti kami
+* Terdapat beberapa materi yang tidak diberikan pada sesi lab yang kemudian muncul pada soal shift
+* File crontab yang tidak berjalan sesuai dengan keinginan
