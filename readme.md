@@ -195,6 +195,13 @@ done
 ```
 **Penjelasan Script**
 
+`for gambar in {1..28}`Digunakan untuk *melooping* jumlah gambar yang diunduh hingga berjumlah 28 dan dimasukkan ke variabel **gambar**.
+`do
+wget "https://loremflickr.com/320/240/cat" -a wget.log -O "pdkt_kusuma_$gambar"
+done`
+
+Selama melakukan looping dari 1 hingga 28, dilakukan proses pengunduhan gambar pada situs **https://loremflickr.com/320/240/cat**, *command* **-a** digunakan untuk menampilkan isi log pada saat mengunduh gambar dan kemudian disimpan pada file **wget.log**. Sedangkan *command* **-O** digunakan untuk memberi nama pada tiap gambar yang telah diunduh dengan nama **"pdkt_kusuma_$gambar"** dimana **$gambar** merupakan angka atau urutan pada saat proses pengunduhan tadi. Contoh gambar pertama yang diunduh diberi nama "pdkt_kusuma_1" dan seterusnya hingga gambar yang diunduh berjumlah 28.
+
 #### Soal 3 B
 Code : https://github.com/agung56/SoalShiftSISOP20_modul1_T05/blob/master/soal3/crontab.txt
 * Script untuk 3 B
@@ -202,6 +209,8 @@ Code : https://github.com/agung56/SoalShiftSISOP20_modul1_T05/blob/master/soal3/
 `5 6-23/8 * * 0-5 /bin/bash /home/lab/Downloads/modul1/soal3/soal3.sh`
 
 **Penjelasan Script**
+
+Maksud dari *script* diatas adalah menjalankan program soal3.sh setiap 8 jam sekali pada menit ke-5 yang dimulai pada pukul 6.05 hingga pukul 23.00 selama 6 hari mulai hari minggu hingga hari jumat. Untuk angka **5** menandakan menit, angka **6-23/8** menandakan tiap 8 jam dari pukul 6 hingga 23, tanda **bintang** selanjutnya program berjalan setiap hari mulai tanggal 1 dan seterusnya, untuk tanda **bintang** yang keempat menandakan program dilakukan tiap bulan, dan angka **0-5** menandakan program dilakukan pada hari minggu hingga hari jumat. Perintah **/bin/bash** digunakan untuk menjalankan file bertipe .sh. Dan yang terakhir **/home/lab/Downloads/modul1/soal3/soal3.sh** merupakan lokasi program yang akan dilakukan secara otomatis sesuai jadwal yang telah ditentukan.
 
 #### Soal 3 C
 Code : https://github.com/agung56/SoalShiftSISOP20_modul1_T05/blob/master/soal3/soal3c.sh
