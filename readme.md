@@ -165,6 +165,13 @@ Langkah selanjutnya adalah mencari atau mendapatkan jumlah jam (0-23) ketika fil
 
 Karena file yang dienkripsi hanya huruf atau alfabet saja, oleh karena itu digunakanlah *command* **basename** untuk menghapus ekstensi file yaitu .txt.
 
+`tajukbaru=echo $tajuklama | caesar $time`
+
+Setelah ekstensi file dihilangkan, kemudian melakukan proses enkripsi file tanpa ekstensi dengan jumlah jam yang telah didapat dengan metode caesar. Untuk **caesar** sendiri merupakan library yang tersedia di linux untuk mengenkripsi suatu file dengan metode caesar cipher, tetapi untuk menggunakan *command* tersebut terlebih dahulu harus mengunduhnya terlebih dahulu karena *command* **caesar** tersebut tidak tersedia secara *default* pada linux.
+
+`mv $tajuk $tajukbaru.txt`
+Setelah mendapatkan nama file baru setelah diekstensi kemudian langkah yang terakhir adalah mengganti nama file yang sebelumya dengan nama baru setelah dienkripsi dengan menambahkan ekstensi .txt kembali karena ekstensi sebelumnya telah dihapus sebelum file dienkripsi.
+
 
 #### Soal 2 D
 Code : https://github.com/agung56/SoalShiftSISOP20_modul1_T05/blob/master/soal2/soal_2dekripsi.sh
@@ -183,6 +190,30 @@ mv $tajuk $tajukbaru.txt
 done
 ```
 **Penjelasan Script**
+
+`for tajuk in $@` Semua input yang dimasukkan pada program tersebut akan dijadikan sebagai **$@** dan kemudian dimasukkan kedalam variabel dengan nama **tajuk**.
+
+`do
+
+time=date +%H -r $tajuk`
+
+Langkah selanjutnya adalah mencari atau mendapatkan jumlah jam (0-23) ketika file tersebut dibuat dimana pada soal yang tertera untuk melakukan dekripsi file tersebut dengan menggunakan algoritma caesar cipher yang menggunakan jumlah jam sebagai kunci(*key*) untuk menggeser huruf per huruf pada file tersebut. **date +%H** merupakan *command* yang digunakan untuk mendapatkan data berupa waktu file tersebut dibuat, dan **-r** merupakan *command* yang digunakan untuk membaca file yang akan dicari waktu file tersebut dibuat.
+
+`tajuklama=basename $tajuk .txt`
+
+Karena file yang didekripsi hanya huruf atau alfabet saja, oleh karena itu digunakanlah *command* **basename** untuk menghapus ekstensi file yaitu .txt.
+
+`jambaru=expr 26 - $jam`
+
+Setelah menghilangkan ekstensi, selanjutnya dilakukan penghitungan ulang dengan cara 26 (jumlah alfabet) dikurangi dengan jam file dibuat. Kenapa pengurangan yang dilakukan **26 - $jam** bukan **$jam - 26**, karena apabila **$jam - 26** akan menghasilkan nilai minus dimana huruf akan digeser kekiri, apabila jumlah huruf yang digeser pada saat enkripsi ataupun pada saat dekripsi tidak seimbang maka huruf tidak akan kembali keposisi semula sebelum file dienkripsi.
+
+`tajukbaru=echo $tajuklama | caesar $time`
+
+Setelah ekstensi file dihilangkan dan variabel **$jambaru** sebagai kunci (*key*) baru untuk dekripsi file didapat, kemudian melakukan proses dekripsi file tanpa ekstensi dengan jumlah jam yang telah didapat dengan metode caesar. Untuk **caesar** sendiri merupakan library yang tersedia di linux untuk mengenkripsi suatu file dengan metode caesar cipher, tetapi untuk menggunakan *command* tersebut terlebih dahulu harus mengunduhnya terlebih dahulu karena *command* **caesar** tersebut tidak tersedia secara *default* pada linux.
+
+`mv $tajuk $tajukbaru.txt`
+Setelah mendapatkan nama file baru setelah diekstensi kemudian langkah yang terakhir adalah mengganti nama file yang sebelumya dengan nama baru setelah didekripsi dengan menambahkan ekstensi .txt kembali karena ekstensi sebelumnya telah dihapus sebelum file didekripsi dan nama file kembali seperti semula sebelum dienkripsi.
+
 
 ## Soal 3
 ### Deskripsi Soal
