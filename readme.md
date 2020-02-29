@@ -88,6 +88,9 @@ Selanjutnya dari hasil tersebut akan muncul *output* berupa nama *state* beserta
 
 Selanjutnya dari hasil *command* sebelumnya, akan dilanjutkan dengan *command* **awk -F","** yaitu *command* awk dan -F sebagai pemisah (*separator*) dan tanda koma sebagai pemisah yang diinput. Setelah itu untuk *command* `NR<11 {printf "%s\n", $1 }'` karena yang ingin ditampilkan 10 baris pertama yaitu yang memiliki profit terkecil maka yang dilakukan adalah memilih *number of rows* kurang dari 11, yaitu **row pertama sampai ke sepuluh**, dan melakukan printf yaitu menampilkan **string** yang diambil dari nama produk
 
+**Output**
+
+![Image of soal1](https://github.com/agung56/SoalShiftSISOP20_modul1_T05/blob/master/img/soal1.png)
 ## Soal2
 ### Deskripsi Soal
 **A**. Membuat sebuah script bash yang dapat menghasilkan password secara acak sebanyak 28 kaeakter yang terdapat huruf besar, huruf kecil, angka.
